@@ -1,8 +1,8 @@
 {
   "functions": {
     "api/proxy.js": {
-      "memory": 1024,
-      "maxDuration": 10
+      "memory": 128,
+      "maxDuration": 60
     }
   },
   "headers": [
@@ -10,9 +10,24 @@
       "source": "/api/(.*)",
       "headers": [
         { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET,POST,OPTIONS" },
-        { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
+        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, PUT, DELETE, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization, X-Requested-With" },
+        { "key": "Access-Control-Max-Age", "value": "86400" }
       ]
+    }
+  ],
+  "crons": [],
+  "builds": [
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "regions": ["iad1"],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/proxy.js"
     }
   ]
 }
