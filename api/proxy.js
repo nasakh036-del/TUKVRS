@@ -1,4 +1,5 @@
 export default async function handler(req, res) {
+  // فقط درخواست‌های POST را قبول کن
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -6,19 +7,27 @@ export default async function handler(req, res) {
   try {
     const { m: method, u: url, h: headers, b: body, ct: contentType } = req.body;
 
+    // اعتبارسنجی URL
     if (!url || !url.startsWith('http')) {
       return res.status(400).json({ error: 'Invalid URL' });
     }
 
+    // آماده‌سازی هدرها
     const fetchHeaders = new Headers();
     if (headers) {
       Object.entries(headers).forEach(([key, value]) => {
-        if (!['host', 'connection', 'content-length', 'transfer-encoding'].includes(key.toLowerCase())) {
+        // فیلتر کردن هدرهای مشکل‌دار
+        const lowerKey = key.toLowerCase();
+        if (!['host', 'connection', 'content-length', 'transfer-encoding', 'accept-encoding'].includes(lowerKey)) {
           fetchHeaders.set(key, value);
         }
       });
     }
 
+    // اضافه کردن هدرهای مهم
+    fetchHeaders.set('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
+
+    // آماده‌سازی body
     let bodyData = undefined;
     if (body) {
       bodyData = Buffer.from(body, 'base64');
@@ -27,20 +36,24 @@ export default async function handler(req, res) {
       }
     }
 
+    // ارسال درخواست به سرور مقصد
     const response = await fetch(url, {
       method: method || 'GET',
       headers: fetchHeaders,
       body: bodyData,
     });
 
+    // دریافت پاسخ
     const responseBody = await response.arrayBuffer();
     const responseHeaders = {};
     response.headers.forEach((value, key) => {
-      if (!['content-encoding', 'transfer-encoding'].includes(key.toLowerCase())) {
+      const lowerKey = key.toLowerCase();
+      if (!['content-encoding', 'transfer-encoding', 'connection'].includes(lowerKey)) {
         responseHeaders[key] = value;
       }
     });
 
+    // بازگرداندن پاسخ
     return res.status(200).json({
       s: response.status,
       h: responseHeaders,
