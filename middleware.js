@@ -1,21 +1,58 @@
-export default function middleware(request) {
+export default async function middleware(request) {
   const url = new URL(request.url);
   const pathname = url.pathname;
   const search = url.search;
-
-  // اگر مسیر /login باشه، درخواست رو به backboard پروکسی کن
+  const headers = new Headers(request.headers);
+  
+  headers.delete('x-forwarded-host');
+  
+  // اگر مسیر /login باشه، به backboard پروکسی کن
   if (pathname.startsWith('/login')) {
-    return fetch(`https://backboard.vercel.app${pathname}${search}`, {
+    headers.set('host', 'backboard.vercel.app');
+    try {
+      const res = await fetch(`https://backboard.vercel.app${pathname}${search}`, {
+        method: request.method,
+        headers: headers,
+        body: request.body,
+        redirect: 'manual'
+      });
+      
+      if (res.status === 302 || res.status === 301) {
+        const location = res.headers.get('location');
+        if (location && location.includes('github.com')) {
+          const newLocation = location.replace(
+            'https://github.com',
+            'https://OAUTH_DOMAIN.vercel.app'
+          );
+          return new Response(null, {
+            status: res.status,
+            headers: { 'Location': newLocation }
+          });
+        }
+        return res;
+      }
+      return res;
+    } catch (e) {
+      return new Response('Error: ' + e.message, { status: 500 });
+    }
+  }
+  
+  // callback از گیت‌هاب
+  if (pathname.startsWith('/login/oauth')) {
+    headers.set('host', 'github.com');
+    return fetch(`https://OAUTH_DOMAIN.vercel.app${pathname}${search}`, {
       method: request.method,
-      headers: request.headers,
-      body: request.body
+      headers: headers,
+      body: request.body,
+      redirect: 'manual'
     });
   }
-
-  // در غیر این صورت، درخواست رو به Railway پروکسی کن
+  
+  // بقیه مسیرها به Railway
+  headers.set('host', 'railway.com');
   return fetch(`https://railway.com${pathname}${search}`, {
     method: request.method,
-    headers: request.headers,
+    headers: headers,
     body: request.body
   });
 }
