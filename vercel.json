@@ -1,6 +1,7 @@
 {
   "rewrites": [
     { "source": "/login/:path*", "destination": "https://backboard.vercel.app/login/:path*" },
+    { "source": "/api/auth/:path*", "destination": "https://railway.com/api/auth/:path*" },
     { "source": "/(.*)", "destination": "https://railway.com/$1" }
   ]
 }
