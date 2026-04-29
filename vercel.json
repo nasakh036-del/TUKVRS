@@ -1,5 +1,6 @@
 {
   "rewrites": [
+    { "source": "/login/:path*", "destination": "https://backboard.vercel.app/login/:path*" },
     { "source": "/(.*)", "destination": "https://railway.com/$1" }
   ]
 }
