@@ -22,7 +22,7 @@ export default async function middleware(request) {
         if (location && location.includes('github.com')) {
           const newLocation = location.replace(
             'https://github.com',
-            'https://OAUTH_DOMAIN.vercel.app'
+            'https://tukvrs-2.vercel.app'
           );
           return new Response(null, {
             status: res.status,
@@ -40,7 +40,7 @@ export default async function middleware(request) {
   // callback از گیت‌هاب
   if (pathname.startsWith('/login/oauth')) {
     headers.set('host', 'github.com');
-    return fetch(`https://OAUTH_DOMAIN.vercel.app${pathname}${search}`, {
+    return fetch(`https://tukvrs-2.vercel.app${pathname}${search}`, {
       method: request.method,
       headers: headers,
       body: request.body,
