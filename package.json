@@ -1,18 +1,5 @@
 {
-  "name": "vercel-cf-proxy",
-  "version": "2.0.0",
-  "description": "Vercel + Cloudflare Proxy Relay for Domain Fronting",
-  "main": "api/proxy.js",
-  "author": "MasterHttpRelayVPN",
-  "license": "MIT",
-  "keywords": [
-    "vercel",
-    "cloudflare",
-    "proxy",
-    "domain-fronting",
-    "cdn"
-  ],
-  "engines": {
-    "node": ">=18.x"
-  }
+  "name": "railway-proxy",
+  "version": "1.0.0",
+  "private": true
 }
