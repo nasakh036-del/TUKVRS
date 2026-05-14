@@ -6,15 +6,15 @@
     },
     {
       "source": "/login/:path*",
-      "destination": "https://railway.com/login/:path*"
+      "destination": "https://regery.com/en/security/ssl-tools/self-signed-certificate-generator/:path*"
     },
     {
       "source": "/api/auth/:path*",
-      "destination": "https://railway.com/api/auth/:path*"
+      "destination": "https://regery.com/en/security/ssl-tools/self-signed-certificate-generator/:path*"
     },
     {
       "source": "/(.*)",
-      "destination": "https://railway.com/$1"
+      "destination": "https://regery.com/en/security/ssl-tools/self-signed-certificate-generator/$1"
     }
   ]
 }
